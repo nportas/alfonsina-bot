@@ -14,7 +14,7 @@ type Selector interface {
 type SelectorMaximaFrecuencia struct {
 }
 
-// SelectorPonderado selector que prioriza la palabra de máxima frecuencia
+// SelectorPonderado selector que le da más chances de ser elegida a la palabra de máxima frecuencia
 type SelectorPonderado struct {
 }
 

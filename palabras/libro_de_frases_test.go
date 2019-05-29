@@ -3,7 +3,7 @@ package palabras_test
 import (
 	"testing"
 
-	"github.com/nickrisaro/generador-de-frases/palabras"
+	"github.com/nportas/alfonsina-bot/palabras"
 )
 
 func TestAlAgregarUnaFraseDeDosPalabrasSeGeneraUnaListaConFrecuenciasDePalabras(t *testing.T) {

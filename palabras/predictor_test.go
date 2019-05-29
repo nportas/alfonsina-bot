@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/nickrisaro/generador-de-frases/palabras"
+	"github.com/nportas/alfonsina-bot/palabras"
 )
 
 func TestGenerarFraseDeDosPalabras(t *testing.T) {
