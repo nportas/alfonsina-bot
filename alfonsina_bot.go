@@ -37,7 +37,9 @@ func main() {
 
 	fmt.Println("------------Entrenamiento finalizado------------------")
 
-	poemario := poemas.NewPoemario(libro)
+	selector := palabras.NewSelectorPonderado()
+	predictor := palabras.NewPredictor(libro, selector)
+	poemario := poemas.NewPoemario(predictor)
 	server := api.NewGinServer(poemario)
 	server.Start()
 }

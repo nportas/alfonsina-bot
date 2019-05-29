@@ -1,7 +1,6 @@
 package poemas
 
 import (
-	"fmt"
 	"math/rand"
 	"strings"
 	"time"
@@ -11,7 +10,7 @@ import (
 
 // Poemario representación de un poemario
 type Poemario struct {
-	predictor *palabras.Predictor
+	generador palabras.GeneradorDeFrases
 }
 
 const (
@@ -26,9 +25,8 @@ const (
 )
 
 // NewPoemario construye un nuevo poemario a partir de un libro con el que se lo entrena
-func NewPoemario(libroDeFrases *palabras.LibroDeFrases) *Poemario {
-	predictor := palabras.NewPredictor(libroDeFrases, palabras.NewSelectorPonderado())
-	return &Poemario{predictor}
+func NewPoemario(generadorDeFrases palabras.GeneradorDeFrases) *Poemario {
+	return &Poemario{generadorDeFrases}
 }
 
 // GenerarPoesiaAPartirDe genera una poesia que comienza con la palabra primeraPalabra
@@ -44,15 +42,11 @@ func (p *Poemario) GenerarPoesiaAPartirDe(primeraPalabra string) string {
 		cantidadDeVersos := p.cantidadDeVersos(cantidadDeEstrofas)
 		for i := 1; i < cantidadDeVersos; i++ {
 			verso, cantidadDePalabras := p.generarVersoAPartirDe(primeraPalabra)
-			fmt.Println("----------verso: " + verso)
-			if len(strings.TrimSpace(verso)) == 0 {
-				verso = p.generarVerso(cantidadDePalabras)
-				fmt.Println("----------entro a generar nuevo verso: " + verso)
-			}
 			estrofa = estrofa + verso
-			palabras := strings.Split(verso, " ")
-			if len(palabras) > 0 {
-				primeraPalabra = palabras[cantidadDePalabras-1]
+			versoSinEnter := strings.Replace(verso, "/n", "", -1)
+			palabrasDelVerso := strings.Split(versoSinEnter, " ")
+			if len(palabrasDelVerso) > 0 {
+				primeraPalabra = palabrasDelVerso[cantidadDePalabras-1]
 			}
 		}
 		poema = poema + estrofa + "/n"
@@ -63,11 +57,15 @@ func (p *Poemario) GenerarPoesiaAPartirDe(primeraPalabra string) string {
 
 func (p *Poemario) generarVersoAPartirDe(primeraPalabra string) (string, int) {
 	cantidadDePalabras := rand.Intn(maxPalabras-minPalabras) + minPalabras
-	return p.predictor.GenerarFraseAPartirDe(primeraPalabra, cantidadDePalabras) + "/n", cantidadDePalabras
-}
+	verso := p.generador.GenerarFraseAPartirDe(primeraPalabra, cantidadDePalabras)
+	i := 0
 
-func (p *Poemario) generarVerso(cantidadDePalabras int) string {
-	return p.predictor.GenerarFrase(cantidadDePalabras) + "/n"
+	for len(strings.TrimSpace(verso)) == 0 && i < 1000 {
+		verso = p.generador.GenerarFrase(cantidadDePalabras)
+		i++
+	}
+
+	return verso + "/n", cantidadDePalabras
 }
 
 func (p *Poemario) cantidadDeVersos(cantidadDeEstrofas int) int {

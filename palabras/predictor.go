@@ -5,6 +5,12 @@ import (
 	"time"
 )
 
+// GeneradorDeFrases es la interface que expone los métodos para generar frases
+type GeneradorDeFrases interface {
+	GenerarFrase(cantidadDePalabras int) string
+	GenerarFraseAPartirDe(primeraPalabra string, cantidadDePalabras int) string
+}
+
 // Predictor es el encargado de generar frases que podría decir un ser humano
 type Predictor struct {
 	libroDeFrases *LibroDeFrases
