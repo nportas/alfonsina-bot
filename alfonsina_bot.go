@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 
-	_ "github.com/gin-gonic/gin"
 	"github.com/nportas/alfonsina-bot/api"
 	"github.com/nportas/alfonsina-bot/palabras"
 	"github.com/nportas/alfonsina-bot/poemas"
