@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/nportas/alfonsina-bot/api"
 	"github.com/nportas/alfonsina-bot/palabras"
@@ -25,7 +26,7 @@ func main() {
 	for scanner.Scan() {
 		frase := scanner.Text()
 
-		if frase != "" {
+		if len(strings.TrimSpace(frase)) > 0 {
 			libro.AgregarFrase(frase)
 		}
 	}
