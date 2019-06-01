@@ -51,11 +51,11 @@ func (p *Poemario) GenerarPoesiaAPartirDe(primeraPalabra string) *Poema {
 
 	poema := new(Poema)
 
-	for i := 1; i < cantidadDeEstrofas; i++ {
+	for i := 0; i < cantidadDeEstrofas; i++ {
 		estrofa := new(Estrofa)
 		cantidadDeVersos := p.cantidadDeVersos(cantidadDeEstrofas)
-		for i := 1; i < cantidadDeVersos; i++ {
-			verso := p.generarVersoAPartirDe(primeraPalabra)
+		for j := 0; j < cantidadDeVersos; j++ {
+			verso := p.generarVersoAPartirDe(primeraPalabra, j)
 			if !verso.EsVacio() {
 				estrofa.Versos = append(estrofa.Versos, verso)
 				primeraPalabra = p.obtenerNuevaPrimeraPalabra(verso)
@@ -71,7 +71,7 @@ func (p *Poemario) GenerarPoesiaAPartirDe(primeraPalabra string) *Poema {
 	return poema
 }
 
-func (p *Poemario) generarVersoAPartirDe(primeraPalabra string) *Verso {
+func (p *Poemario) generarVersoAPartirDe(primeraPalabra string, numeroDeVerso int) *Verso {
 	cantidadDePalabras := rand.Intn(maxPalabras-minPalabras) + minPalabras
 	frase := p.generador.GenerarFraseAPartirDe(primeraPalabra, cantidadDePalabras)
 	i := 0
@@ -87,17 +87,35 @@ func (p *Poemario) generarVersoAPartirDe(primeraPalabra string) *Verso {
 
 	// Paso las palabras del verso a un slice
 	if len(strings.TrimSpace(frase)) > 0 {
+
 		palabrasDelVerso := strings.Split(frase, " ")
-		for i, p := range palabrasDelVerso {
-			if i != len(palabrasDelVerso)-1 {
-				verso.Palabras = append(verso.Palabras, p)
-			} else if len(p) > 3 {
-				verso.Palabras = append(verso.Palabras, p)
-			}
+
+		palabrasDelVerso = p.eliminarPalabrasRepetidas(palabrasDelVerso, primeraPalabra, numeroDeVerso)
+		palabrasDelVerso = p.eliminarUltimaPalabraSiEsMuyCorta(palabrasDelVerso)
+
+		for _, p := range palabrasDelVerso {
+			verso.Palabras = append(verso.Palabras, p)
 		}
 	}
 
 	return verso
+}
+
+func (p *Poemario) eliminarPalabrasRepetidas(palabrasDelVerso []string, primeraPalabra string, i int) []string {
+	// Permite repetir palabras solo en los versos pares
+	if (palabrasDelVerso)[0] == primeraPalabra && i%2 != 0 {
+		palabrasDelVerso = palabrasDelVerso[1:]
+	}
+
+	return palabrasDelVerso
+}
+
+func (p *Poemario) eliminarUltimaPalabraSiEsMuyCorta(palabrasDelVerso []string) []string {
+	// Solo permite como última palabra, palabras de 4 o más letras
+	if len(palabrasDelVerso[len(palabrasDelVerso)-1]) < 4 {
+		palabrasDelVerso = palabrasDelVerso[0 : len(palabrasDelVerso)-1]
+	}
+	return palabrasDelVerso
 }
 
 func (p *Poemario) cantidadDeVersos(cantidadDeEstrofas int) int {
@@ -117,14 +135,13 @@ func (p *Poemario) cantidadDeVersos(cantidadDeEstrofas int) int {
 
 func (p *Poemario) obtenerNuevaPrimeraPalabra(verso *Verso) string {
 
-	var primeraPalabra string
 	palabrasDelVerso := verso.Palabras
 
-	if len(palabrasDelVerso) > 0 {
-		primeraPalabra = palabrasDelVerso[len(palabrasDelVerso)-1]
+	if len(palabrasDelVerso) > 1 {
+		return palabrasDelVerso[rand.Intn(len(verso.Palabras)-1)]
 	}
 
-	return primeraPalabra
+	return palabrasDelVerso[0]
 }
 
 func (v *Verso) EsVacio() bool {
