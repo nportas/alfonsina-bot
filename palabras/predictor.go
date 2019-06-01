@@ -56,7 +56,8 @@ func (p *Predictor) GenerarFraseAPartirDe(primeraPalabra string, cantidadDePalab
 
 		siguientePalabra := p.buscarPalabraConMayorFrecuencia(siguientesPalabras)
 
-		// Evito generar una palabra vacia
+		// Evito generar una palabra vacia. Si no hay palabra siguiente con
+		// mayor frecuencia tomo una al azar
 		if len(strings.TrimSpace(siguientePalabra)) == 0 {
 			siguientePalabra = p.obtenerPalabraAlAzar()
 		}
