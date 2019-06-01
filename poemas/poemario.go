@@ -21,7 +21,9 @@ type Estrofa struct {
 	Versos []*Verso
 }
 
-type Verso string
+type Verso struct {
+	Palabras []string
+}
 
 const (
 	cantidadMinimaDeEstrofas                  = 1
@@ -74,14 +76,28 @@ func (p *Poemario) generarVersoAPartirDe(primeraPalabra string) *Verso {
 	frase := p.generador.GenerarFraseAPartirDe(primeraPalabra, cantidadDePalabras)
 	i := 0
 
+	// Si no pudo generar nada intento generar la frase a partir de cualquier palabra
+	// Hago solo 1000 intentos
 	for len(strings.TrimSpace(frase)) == 0 && i < 1000 {
 		frase = p.generador.GenerarFrase(cantidadDePalabras)
 		i++
 	}
 
-	verso := Verso(frase)
+	verso := new(Verso)
 
-	return &verso
+	// Paso las palabras del verso a un slice
+	if len(strings.TrimSpace(frase)) > 0 {
+		palabrasDelVerso := strings.Split(frase, " ")
+		for i, p := range palabrasDelVerso {
+			if i != len(palabrasDelVerso)-1 {
+				verso.Palabras = append(verso.Palabras, p)
+			} else if len(p) > 3 {
+				verso.Palabras = append(verso.Palabras, p)
+			}
+		}
+	}
+
+	return verso
 }
 
 func (p *Poemario) cantidadDeVersos(cantidadDeEstrofas int) int {
@@ -102,7 +118,7 @@ func (p *Poemario) cantidadDeVersos(cantidadDeEstrofas int) int {
 func (p *Poemario) obtenerNuevaPrimeraPalabra(verso *Verso) string {
 
 	var primeraPalabra string
-	palabrasDelVerso := verso.Separar(" ")
+	palabrasDelVerso := verso.Palabras
 
 	if len(palabrasDelVerso) > 0 {
 		primeraPalabra = palabrasDelVerso[len(palabrasDelVerso)-1]
@@ -111,14 +127,6 @@ func (p *Poemario) obtenerNuevaPrimeraPalabra(verso *Verso) string {
 	return primeraPalabra
 }
 
-func (v *Verso) Separar(separador string) []string {
-	return strings.Split(string(*v), separador)
-}
-
 func (v *Verso) EsVacio() bool {
-	return len(strings.TrimSpace(string(*v))) == 0
-}
-
-func (v *Verso) ToString() string {
-	return string(*v)
+	return len(v.Palabras) == 0
 }

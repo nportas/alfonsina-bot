@@ -25,8 +25,7 @@ func TestNoDebeGenerarPoesiaConVersosVacios(t *testing.T) {
 
 }
 
-/*
-func TestNoDebeGenerarVersoConConectoresComoPalabraFinal(t *testing.T) {
+func TestDebeGenerarVersoConPalabraFinaleDeMasDe3Letras(t *testing.T) {
 
 	// Inicialización
 	predictor := palabras.NewPredictorMock()
@@ -37,18 +36,37 @@ func TestNoDebeGenerarVersoConConectoresComoPalabraFinal(t *testing.T) {
 	poesia := poemario.GenerarPoesiaAPartirDe("fuego")
 
 	// Validación
-	palabrasDelVerso := poesia.Estrofas[0].Versos[0].Separar(" ")
+	palabrasDelVerso := poesia.Estrofas[0].Versos[0].Palabras
 	if palabrasDelVerso[len(palabrasDelVerso)-1] == "me" {
-		t.Logf("Se esperaba un verso sin conectores como palabra final pero se generó '%s'", poesia.Estrofas[0].Versos[0].ToString())
+		t.Logf("Se esperaba un verso sin conectores como palabra final pero se generó '%s'", poesia.Estrofas[0].Versos[0].Palabras)
 		t.FailNow()
 	}
 
-}*/
+}
+
+func TestNoDebeGenerarVersoConPalabraFinaleDe1Letra(t *testing.T) {
+
+	// Inicialización
+	predictor := palabras.NewPredictorMock()
+	predictor.ResponderConFrase("beso viene a")
+	poemario := poemas.NewPoemario(predictor)
+
+	// Operación
+	poesia := poemario.GenerarPoesiaAPartirDe("fuego")
+
+	// Validación
+	palabrasDelVerso := poesia.Estrofas[0].Versos[0].Palabras
+	if palabrasDelVerso[len(palabrasDelVerso)-1] == "a" {
+		t.Logf("Se esperaba un verso sin conectores como palabra final pero se generó '%s'", poesia.Estrofas[0].Versos[0].Palabras)
+		t.FailNow()
+	}
+
+}
 
 func TestEsVacio(t *testing.T) {
 
 	// Inicialización
-	verso := poemas.Verso(" ")
+	verso := new(poemas.Verso)
 
 	// Operación
 	esVacio := verso.EsVacio()

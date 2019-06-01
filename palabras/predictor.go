@@ -2,6 +2,7 @@ package palabras
 
 import (
 	"math/rand"
+	"strings"
 	"time"
 )
 
@@ -54,6 +55,11 @@ func (p *Predictor) GenerarFraseAPartirDe(primeraPalabra string, cantidadDePalab
 	for palabrasDeLaFrase < cantidadDePalabras {
 
 		siguientePalabra := p.buscarPalabraConMayorFrecuencia(siguientesPalabras)
+
+		// Evito generar una palabra vacia
+		if len(strings.TrimSpace(siguientePalabra)) == 0 {
+			siguientePalabra = p.obtenerPalabraAlAzar()
+		}
 
 		frase = frase + " " + siguientePalabra
 		palabrasDeLaFrase++
