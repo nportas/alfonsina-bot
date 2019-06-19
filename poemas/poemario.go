@@ -43,6 +43,12 @@ func NewPoemario(generadorDeFrases palabras.GeneradorDeFrases) *Poemario {
 	return &Poemario{generadorDeFrases}
 }
 
+// GenerarPoesia genera una poesia que comienza con una palabra obtenida al azar
+func (p *Poemario) GenerarPoesia() *Poema {
+	palabraInicial := p.generador.ObtenerPalabraAlAzar()
+	return GenerarPoesiaAPartirDe(palabraInicial)
+}
+
 // GenerarPoesiaAPartirDe genera una poesia que comienza con la palabra primeraPalabra
 func (p *Poemario) GenerarPoesiaAPartirDe(primeraPalabra string) *Poema {
 

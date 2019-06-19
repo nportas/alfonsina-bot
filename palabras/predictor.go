@@ -10,6 +10,7 @@ import (
 type GeneradorDeFrases interface {
 	GenerarFrase(cantidadDePalabras int) string
 	GenerarFraseAPartirDe(primeraPalabra string, cantidadDePalabras int) string
+	ObtenerPalabraAlAzar() string
 }
 
 // Predictor es el encargado de generar frases que podría decir un ser humano
@@ -31,11 +32,11 @@ func NewPredictor(libroDeFrases *LibroDeFrases, selector Selector) *Predictor {
 // GenerarFrase genera una frase que comienza con alguna de las palabras que la persona dice
 func (p *Predictor) GenerarFrase(cantidadDePalabras int) string {
 
-	primeraPalabra := p.obtenerPalabraAlAzar()
+	primeraPalabra := p.ObtenerPalabraAlAzar()
 	return p.GenerarFraseAPartirDe(primeraPalabra, cantidadDePalabras)
 }
 
-func (p *Predictor) obtenerPalabraAlAzar() string {
+func (p *Predictor) ObtenerPalabraAlAzar() string {
 
 	rand.Seed(time.Now().UnixNano())
 
