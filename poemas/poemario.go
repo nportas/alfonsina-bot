@@ -27,13 +27,13 @@ type Verso struct {
 
 const (
 	cantidadMinimaDeEstrofas                  = 1
-	cantidadMaximaDeEstrofas                  = 8
-	cantidadMinimaDeVersosParaMasDeUnaEstrofa = 2
-	cantidadMaximaDeVersosParaMasDeUnaEstrofa = 4
-	cantidadMinimaDeVersosParaSoloUnaEstrofa  = 5
-	cantidadMaximaDeVersosParaSoloUnaEstrofa  = 20
-	minPalabras                               = 2
-	maxPalabras                               = 10
+	cantidadMaximaDeEstrofas                  = 1
+	cantidadMinimaDeVersosParaMasDeUnaEstrofa = 4
+	cantidadMaximaDeVersosParaMasDeUnaEstrofa = 7
+	cantidadMinimaDeVersosParaSoloUnaEstrofa  = 3
+	cantidadMaximaDeVersosParaSoloUnaEstrofa  = 6
+	minPalabras                               = 3
+	maxPalabras                               = 6
 )
 
 var palabrasNoFinales = []string{"con", "las", "los"}
@@ -46,14 +46,14 @@ func NewPoemario(generadorDeFrases palabras.GeneradorDeFrases) *Poemario {
 // GenerarPoesia genera una poesia que comienza con una palabra obtenida al azar
 func (p *Poemario) GenerarPoesia() *Poema {
 	palabraInicial := p.generador.ObtenerPalabraAlAzar()
-	return GenerarPoesiaAPartirDe(palabraInicial)
+	return p.GenerarPoesiaAPartirDe(palabraInicial)
 }
 
 // GenerarPoesiaAPartirDe genera una poesia que comienza con la palabra primeraPalabra
 func (p *Poemario) GenerarPoesiaAPartirDe(primeraPalabra string) *Poema {
 
 	rand.Seed(time.Now().UnixNano())
-	cantidadDeEstrofas := rand.Intn(cantidadMaximaDeEstrofas-cantidadMinimaDeEstrofas) + cantidadMinimaDeEstrofas
+	cantidadDeEstrofas := 1
 
 	poema := new(Poema)
 
