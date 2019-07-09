@@ -15,7 +15,7 @@ func TestNoDebeGenerarPoesiaConVersosVacios(t *testing.T) {
 	poemario := poemas.NewPoemario(predictor)
 
 	// Operación
-	poesia := poemario.GenerarPoesiaAPartirDe("amor")
+	poesia := poemario.GenerarPoesiaAPartirDe("amor", "1", "3")
 
 	// Validación
 	if len(poesia.Estrofas) != 0 {
@@ -33,7 +33,7 @@ func TestDebeGenerarVersoConPalabraFinaleDeMasDe3Letras(t *testing.T) {
 	poemario := poemas.NewPoemario(predictor)
 
 	// Operación
-	poesia := poemario.GenerarPoesiaAPartirDe("fuego")
+	poesia := poemario.GenerarPoesiaAPartirDe("fuego", "1", "3")
 
 	// Validación
 	palabrasDelVerso := poesia.Estrofas[0].Versos[0].Palabras
@@ -52,7 +52,7 @@ func TestNoDebeGenerarVersoConPalabraFinaleDe1Letra(t *testing.T) {
 	poemario := poemas.NewPoemario(predictor)
 
 	// Operación
-	poesia := poemario.GenerarPoesiaAPartirDe("fuego")
+	poesia := poemario.GenerarPoesiaAPartirDe("fuego", "1", "3")
 
 	// Validación
 	palabrasDelVerso := poesia.Estrofas[0].Versos[0].Palabras

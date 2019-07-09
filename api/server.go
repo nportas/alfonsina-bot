@@ -19,19 +19,21 @@ func (server *GinServer) Start() {
 
 	router := gin.Default()
 
-	router.GET("/generarPoesia/:palabra", server.generarPoesiaAPartirDe)
-	router.GET("/generarPoesia", server.generarPoesia)
+	router.GET("/generarPoesiaAPartirDe/:palabra/:cantidadMinVersos/:cantidadMaxVersos", server.generarPoesiaAPartirDe)
+	router.GET("/generarPoesia/:cantidadMinVersos/:cantidadMaxVersos", server.generarPoesia)
 
 	router.Run()
 }
 
 func (server *GinServer) generarPoesiaAPartirDe(c *gin.Context) {
-
 	palabra := c.Param("palabra")
-	c.JSON(http.StatusOK, server.poemario.GenerarPoesiaAPartirDe(palabra))
+	cantidadMinVersos := c.Param("cantidadMinVersos")
+	cantidadMaxVersos := c.Param("cantidadMaxVersos")
+	c.JSON(http.StatusOK, server.poemario.GenerarPoesiaAPartirDe(palabra, cantidadMinVersos, cantidadMaxVersos))
 }
 
 func (server *GinServer) generarPoesia(c *gin.Context) {
-
-	c.JSON(http.StatusOK, server.poemario.GenerarPoesia())
+	cantidadMinVersos := c.Param("cantidadMinVersos")
+	cantidadMaxVersos := c.Param("cantidadMaxVersos")
+	c.JSON(http.StatusOK, server.poemario.GenerarPoesia(cantidadMinVersos, cantidadMaxVersos))
 }

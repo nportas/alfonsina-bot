@@ -2,7 +2,8 @@ package palabras
 
 // PredictorMock Mockea un predictor
 type PredictorMock struct {
-	fraseAResponder string
+	fraseAResponder         string
+	palabraAlAzarAResponder string
 }
 
 // NewPredictorMock construye un nuevo predictor mock
@@ -23,4 +24,9 @@ func (p *PredictorMock) GenerarFraseAPartirDe(primeraPalabra string, cantidadDeP
 // ResponderConFrase permite modificar la frase con la que se va a responder
 func (p *PredictorMock) ResponderConFrase(frase string) {
 	p.fraseAResponder = frase
+}
+
+func (p *PredictorMock) ObtenerPalabraAlAzar() string {
+
+	return p.palabraAlAzarAResponder
 }

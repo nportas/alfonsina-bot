@@ -2,6 +2,7 @@ package poemas
 
 import (
 	"math/rand"
+	"strconv"
 	"strings"
 	"time"
 
@@ -26,14 +27,10 @@ type Verso struct {
 }
 
 const (
-	cantidadMinimaDeEstrofas                  = 1
-	cantidadMaximaDeEstrofas                  = 1
-	cantidadMinimaDeVersosParaMasDeUnaEstrofa = 4
-	cantidadMaximaDeVersosParaMasDeUnaEstrofa = 7
-	cantidadMinimaDeVersosParaSoloUnaEstrofa  = 3
-	cantidadMaximaDeVersosParaSoloUnaEstrofa  = 6
-	minPalabras                               = 3
-	maxPalabras                               = 6
+	cantidadMinimaDeEstrofas = 1
+	cantidadMaximaDeEstrofas = 1
+	minPalabras              = 3
+	maxPalabras              = 6
 )
 
 var palabrasNoFinales = []string{"con", "las", "los"}
@@ -44,13 +41,13 @@ func NewPoemario(generadorDeFrases palabras.GeneradorDeFrases) *Poemario {
 }
 
 // GenerarPoesia genera una poesia que comienza con una palabra obtenida al azar
-func (p *Poemario) GenerarPoesia() *Poema {
+func (p *Poemario) GenerarPoesia(cantidadMinVersos, cantidadMaxVersos string) *Poema {
 	palabraInicial := p.generador.ObtenerPalabraAlAzar()
-	return p.GenerarPoesiaAPartirDe(palabraInicial)
+	return p.GenerarPoesiaAPartirDe(palabraInicial, cantidadMinVersos, cantidadMaxVersos)
 }
 
 // GenerarPoesiaAPartirDe genera una poesia que comienza con la palabra primeraPalabra
-func (p *Poemario) GenerarPoesiaAPartirDe(primeraPalabra string) *Poema {
+func (p *Poemario) GenerarPoesiaAPartirDe(primeraPalabra, cantidadMinVersos, cantidadMaxVersos string) *Poema {
 
 	rand.Seed(time.Now().UnixNano())
 	cantidadDeEstrofas := 1
@@ -59,7 +56,7 @@ func (p *Poemario) GenerarPoesiaAPartirDe(primeraPalabra string) *Poema {
 
 	for i := 0; i < cantidadDeEstrofas; i++ {
 		estrofa := new(Estrofa)
-		cantidadDeVersos := p.cantidadDeVersos(cantidadDeEstrofas)
+		cantidadDeVersos := p.cantidadDeVersos(cantidadMinVersos, cantidadMaxVersos)
 		for j := 0; j < cantidadDeVersos; j++ {
 			verso := p.generarVersoAPartirDe(primeraPalabra, j)
 			if !verso.EsVacio() {
@@ -124,17 +121,10 @@ func (p *Poemario) eliminarUltimaPalabraSiEsMuyCorta(palabrasDelVerso []string) 
 	return palabrasDelVerso
 }
 
-func (p *Poemario) cantidadDeVersos(cantidadDeEstrofas int) int {
+func (p *Poemario) cantidadDeVersos(cantidadMinVersos, cantidadMaxVersos string) int {
 
-	var minVersos, maxVersos int
-
-	if cantidadDeEstrofas == 1 {
-		minVersos = cantidadMinimaDeVersosParaSoloUnaEstrofa
-		maxVersos = cantidadMaximaDeVersosParaSoloUnaEstrofa
-	} else {
-		minVersos = cantidadMinimaDeVersosParaMasDeUnaEstrofa
-		maxVersos = cantidadMaximaDeVersosParaMasDeUnaEstrofa
-	}
+	minVersos, _ := strconv.Atoi(cantidadMinVersos)
+	maxVersos, _ := strconv.Atoi(cantidadMaxVersos)
 
 	return rand.Intn(maxVersos-minVersos) + minVersos
 }
