@@ -1,7 +1,0 @@
-{
-    "version": 1,
-    "name": "alfonsina-bot",
-    "builds": [
-      { "src": "*.go", "use": "@now/go" }
-    ]
-  }
