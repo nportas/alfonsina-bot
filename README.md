@@ -4,7 +4,7 @@ Es un pequeño programa que se entrena con poesías y luego puede decir frases q
 
 ## Modo de uso
 
-- Escribir en el archivo frases.txt las poesías con las que se quiere entrenar al sistema
+- Escribir en el archivo alfonsina.txt las poesías con las que se quiere entrenar al sistema
 - Ejecutar go run generador.go
 
 Cuantas más poesías se agreguen mejor será el texto generado
